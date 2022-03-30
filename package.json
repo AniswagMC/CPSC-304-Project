@@ -1,0 +1,23 @@
+{
+  "name": "cpsc-304-project",
+  "version": "1.0.0",
+  "description": "<p>\r   This will be the birthing grounds of the greatest database on trains to ever grace this civilization! \r </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AniswagMC/CPSC-304-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AniswagMC/CPSC-304-Project/issues"
+  },
+  "homepage": "https://github.com/AniswagMC/CPSC-304-Project#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "pg": "^8.7.3"
+  }
+}

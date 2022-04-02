@@ -15,6 +15,14 @@ CREATE TABLE stations (
     PRIMARY KEY (station_num)
 );
 
+CREATE TABLE Visits (
+    train_num INT,
+    station_num INT,
+    arrivaltime TIME,
+    PRIMARY KEY (train_num, station_num),
+    FOREIGN KEY (train_num) REFERENCES Trains, FOREIGN KEY (station_num) REFERENCES Stations
+);
+
 -- Join Query:
 SELECT t.train_id 
 FROM trains t, visits v 

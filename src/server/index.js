@@ -21,6 +21,7 @@ app.get('/t', (req, res) => {
     res.status(500).send(error);
   })
 })
+
 // get trains before 2000
 app.get('/t2000', (req, res) => {
     train_model.getTrains2000()
@@ -67,6 +68,7 @@ app.get('/div', (req, res) => {
         res.status(500).send(error);
     })
 })
+
 // get stations
 app.get('/s', (req, res) => {
   train_model.getStations()
@@ -77,6 +79,7 @@ app.get('/s', (req, res) => {
     res.status(500).send(error);
   })
 })
+
 // get visits
 app.get('/v', (req, res) => {
     train_model.getVisits()
@@ -106,7 +109,7 @@ app.post('/trains', (req, res) => {
     res.status(500).send(error);
   })
 })
-//create station
+
 app.post('/stations', (req, res) => {
   train_model.createStation(req.body)
   .then(response => {
@@ -116,6 +119,7 @@ app.post('/stations', (req, res) => {
     res.status(500).send(error);
   })
 })
+
 //create visit
 app.post('/visits', (req, res) => {
     train_model.createVisit(req.body)
@@ -136,6 +140,7 @@ app.delete('/trains/:train_num', (req, res) => {
     res.status(500).send(error);
   })
 })
+
 app.delete('/stations/:station_num', (req, res) => {
     train_model.deleteTrain(req.params.station_num)
     .then(response => {
@@ -154,6 +159,7 @@ app.delete('/visits/:train_num/:station_num', (req, res) => {
         res.status(500).send(error);
     })
 })
+
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
 })

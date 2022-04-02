@@ -3,20 +3,22 @@ import TrainList from './trainList';
 import StationList from './stationList';
 
 function App() {
-  const [trains, settrains] = useState(false);
+  const [trains, setTrains] = useState(false);
   useEffect(() => {
     gettrain();
   }, []);
+
   function gettrain() {
     fetch('http://localhost:3001/t')
       .then(response => {
         return response.text();
       })
       .then(data => {
-        settrains(data);
+        setTrains(data);
       });
   }
-  const [stations, setstations] = useState(false);
+
+  const [stations, setStations] = useState(false);
   useEffect(() => {
     getstation();
   }, []);
@@ -26,9 +28,10 @@ function App() {
         return response.text();
       })
       .then(data => {
-        setstations(data);
+        setStations(data);
       });
   }
+
   function createtrain() {
     let train_num = prompt('Enter train num');
     let year_in_service = prompt('Enter train year in service')
@@ -50,6 +53,7 @@ function App() {
         gettrain();
       });
   }
+
   function deletetrain() {
     let train_num = prompt('Enter train num');
     fetch(`http://localhost:3001/trains/${train_num}`, {
@@ -63,6 +67,7 @@ function App() {
         gettrain();
       });
   }
+
   function createstation() {
     let station_num = prompt('Enter station num');
     let address = prompt('Enter station address')
@@ -82,6 +87,7 @@ function App() {
         getstation();
       });
   }
+
   function deletestation() {
     let station_num = prompt('Enter station num');
     fetch(`http://localhost:3001/stations/${station_num}`, {
@@ -95,6 +101,7 @@ function App() {
         getstation();
       });
   }
+
   return (
     <>
       <p><strong>Trains</strong></p>

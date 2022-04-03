@@ -156,8 +156,8 @@ function App() {
     let year_built = prompt('Enter train year built')
     let train_id = prompt('Enter train id');
     let train_type = prompt('Enter train type');
-    fetch('http://localhost:3001/trains', {
-      method: 'PUT',
+    fetch('http://localhost:3001/update', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -323,7 +323,7 @@ function App() {
       <button onClick={createvisit}>Add visit</button>
       <br />
 
-      Select Train Parameter:
+      {/* Select Train Parameter:
       <select onChange={changeQueryTrain}>
         <option value="train_num">Train Number</option>
         <option value="year_in_service">Year in service</option>
@@ -349,9 +349,9 @@ function App() {
       <br />
       Select Comparative Value:
       <input type="text" placeholder={qValue} onChange={changeValue} />
-      <input type="submit" onSubmit={forwardQuery}>
-        Submit
-      </input>
+      {/* <input type="submit" onSubmit={forwardQuery}> */}
+        {/* Submit
+      </input> */} 
     </>
   );
 }

@@ -109,6 +109,16 @@ app.post('/trains', (req, res) => {
     res.status(500).send(error);
   })
 })
+//update train
+app.post('/update', (req, res) => {
+  train_model.updateTrain(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
 
 app.put('/trains', (req, res) => {
   train_model.updateTrain(req.body)

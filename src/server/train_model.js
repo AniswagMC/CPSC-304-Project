@@ -1,11 +1,12 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'ani',
+  user: 'chris',
   host: 'localhost',
-  database: 'postgres',
-  password: 'root',
-  port: 4321,
+  database: 'trains_db',
+  password: '304',
+  port: 3040,
 });
+
 
 const getTrains = () => {
   return new Promise((resolve, reject) => {

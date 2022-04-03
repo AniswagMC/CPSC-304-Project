@@ -1,10 +1,10 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'chris',
+  user: 'ani',
   host: 'localhost',
-  database: 'trains_db',
-  password: '304',
-  port: 3040,
+  database: 'postgres',
+  password: 'root',
+  port: 4321,
 });
 
 const getTrains = () => {
@@ -27,6 +27,17 @@ const getTrains2000 = () => {
       resolve(results.rows);
     });
   });
+}
+
+const updateTrain = (body) => {
+  return new Promise((resolve, reject) => {
+    pool.query('UPDATE trains SET train_num = $1, year_in_service = $2, year_built = $3, train_type = $5 WHERE train_id = $4' , [body.train_num, body.year_in_service, body.year_built, body.train_id, body.train_type], (error, results) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(`Train updated with id: ${body.train_id}`);
+      });
+  })
 }
 
 const gettjoin = () => {
@@ -61,8 +72,6 @@ const getdiv = () => {
     });
   });
 }
-
-
 
 const getStations = () => {
   return new Promise(function (resolve, reject) {
@@ -192,6 +201,7 @@ module.exports = {
   getVisits,
   getVisitsATime,
   createTrain,
+  updateTrain,
   createStation,
   createVisit,
   deleteTrain,

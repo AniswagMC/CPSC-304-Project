@@ -110,6 +110,16 @@ app.post('/trains', (req, res) => {
   })
 })
 
+app.put('/trains', (req, res) => {
+  train_model.updateTrain(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
 app.post('/stations', (req, res) => {
   train_model.createStation(req.body)
   .then(response => {

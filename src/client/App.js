@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TrainList from './trainList';
 import StationList from './stationList';
 import VisitList from './visitList';
+import axios from 'axios';
 
 function App() {
   const [trains, setTrains] = useState(false);
@@ -96,7 +97,7 @@ function App() {
         return response.text();
       })
       .then(data => {
-        setStations(data);
+        setstations(data);
       });
   }
 
@@ -126,7 +127,7 @@ function App() {
         setvisitsatime(data);
       });
   }
-  
+
   function createtrain() {
     let train_num = prompt('Enter train num');
     let year_in_service = prompt('Enter train year in service')
@@ -138,7 +139,29 @@ function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({train_num, year_in_service, year_built, train_id, train_type}),
+      body: JSON.stringify({ train_num, year_in_service, year_built, train_id, train_type }),
+    })
+      .then(response => {
+        return response.text();
+      })
+      .then(data => {
+        alert(data);
+        gettrain();
+      });
+  }
+
+  function updateTrain() {
+    let train_num = prompt('Enter train num');
+    let year_in_service = prompt('Enter train year in service')
+    let year_built = prompt('Enter train year built')
+    let train_id = prompt('Enter train id');
+    let train_type = prompt('Enter train type');
+    fetch('http://localhost:3001/trains', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ train_num, year_in_service, year_built, train_id, train_type }),
     })
       .then(response => {
         return response.text();
@@ -172,7 +195,7 @@ function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({station_num, address, name}),
+      body: JSON.stringify({ station_num, address, name }),
     })
       .then(response => {
         return response.text();
@@ -193,7 +216,7 @@ function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({train_num, station_num, arrival_time, depart_time}),
+      body: JSON.stringify({ train_num, station_num, arrival_time, depart_time }),
     })
       .then(response => {
         return response.text();
@@ -230,27 +253,62 @@ function App() {
         getstation();
       });
   }
+  const [qValue, setQValue] = useState(0);
+  const [trainQuery, setTrainQuery] = useState("train_id");
+  const [tableQuery, setTableQuery] = useState("trains");
+  const [trainQuery2, setTrainQuery2] = useState("train_id");
+
+  function changeQueryTrain(e) {
+    setTrainQuery(e.target.value);
+  }
+
+  function changeSecondQueryTrain(e) {
+    setTrainQuery2(e.target.value);
+  }
+
+  function changeQueryTable(e) {
+    setTableQuery(e.target.value);
+  }
+
+  function changeValue(e) {
+    setQValue(e.target.value);
+  }
+
+  function forwardQuery() {
+    axios.get(`http://localhost:3001/`, 
+    {
+      params: {
+        'value': qValue,
+        'query': trainQuery, 
+        'table': tableQuery,
+        'query2': trainQuery2
+      }
+    })
+    .then(response => response.status)
+    .catch(err => console.warn(err));
+  }
 
   return (
     <>
       <p><strong>Trains</strong></p>
-      <TrainList trains={trains} /> 
+      <TrainList trains={trains} />
       <p>Trains made before 2000 (projection):</p>
-      <TrainList trains={trains2000}/>
+      <TrainList trains={trains2000} />
       <p>Trains that arrive at a station at 9:30 (join query: train_id is only in trains):</p>
-      <TrainList trains={tjoin}/>
+      <TrainList trains={tjoin} />
       <p>Max station_num (aggregation query):</p>
-      <StationList stations={maxs}/>
+      <StationList stations={maxs} />
       <p>Latest depart time for each train (group by query):</p>
-      <TrainList trains={gbyq}/>
+      <TrainList trains={gbyq} />
       <p>find the trains that visit all the stations( division query):</p>
-      <TrainList trains={div}/>
+      <TrainList trains={div} />
       {/* {trains ? trains : 'There is no train data available'} */}
       <button onClick={createtrain}>Add train</button>
       <br />
-      <button onClick={deletetrain}>Delete train</button>
+      <button onClick={deletetrain}>Delete train</button> <br />
+      <button onClick={updateTrain}>Update Train</button>
       <p><strong>Stations</strong></p>
-      <StationList stations={stations} /> 
+      <StationList stations={stations} />
       {/* {trains ? trains : 'There is no train data available'} */}
       <br />
       <button onClick={createstation}>Add station</button>
@@ -264,8 +322,36 @@ function App() {
       <br />
       <button onClick={createvisit}>Add visit</button>
       <br />
-      {/* <button onClick={deletevisit}>Delete visit</button> */}
 
+      Select Train Parameter:
+      <select onChange={changeQueryTrain}>
+        <option value="train_num">Train Number</option>
+        <option value="year_in_service">Year in service</option>
+        <option value="year_built">Year built</option>
+        <option value="train_id">Train ID</option>
+        <option value="train_type">Train Type</option>
+      </select>
+      <br />
+      Select Second Train Parameter:
+      <select onChange={changeSecondQueryTrain}>
+        <option value="train_num">Train Number</option>
+        <option value="year_in_service">Year in service</option>
+        <option value="year_built">Year built</option>
+        <option value="train_id">Train ID</option>
+        <option value="train_type">Train Type</option>
+      </select>
+      <br />
+      Select Table:
+      <select onChange={changeQueryTable}>
+        <option value="trains">Trains</option>
+        <option value="stations">Stations</option>
+      </select>
+      <br />
+      Select Comparative Value:
+      <input type="text" placeholder={qValue} onChange={changeValue} />
+      <input type="submit" onSubmit={forwardQuery}>
+        Submit
+      </input>
     </>
   );
 }

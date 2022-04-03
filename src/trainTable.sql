@@ -24,26 +24,26 @@ CREATE TABLE Visits (
 );
 
 -- Join Query:
-SELECT t.train_id 
-FROM trains t, visits v 
-WHERE t.train_id == v.train_id & v.arrival_time == 9:30 -- grab trains that arrive at a station at 9:30
+SELECT t.train_id
+FROM trains t, visits v
+WHERE t.train_num == v.train_num & v.arrival_time == 9:30 -- grab trains that arrive at a station at 9:30
 
 -- Aggregation Query: 
-SELECT MAX(price) 
-FROM tickets -- find the most expensive ticket
+SELECT MAX(station_num)
+FROM stations -- find the most maximum station number
 
 -- Group-by Query: 
 SELECT MAX(v.depart_time) 
 FROM trains t, visits v 
-WHERE t.train_id = v.train_id 
-GROUP BY train (find the latest depart_time for each train)
+WHERE t.train_num = v.train_num
+GROUP BY t -- find the latest depart_time for each train
 
 -- Division Query: 
-SELECT t.trainid 
+SELECT t.train_id
 FROM trains t 
 WHERE NOT EXISTS (
-    (SELECT s.station# 
+    (SELECT s.station_num
     FROM Stations s EXCEPT (
-        SELECT v.station_# 
+        SELECT v.station_num
         FROM visits v 
-        WHERE v.train_id = t.train_id)) -- find the trains that visit all the stations
+        WHERE v.train_num = t.train_num)) -- find the trains that visit all the stations
